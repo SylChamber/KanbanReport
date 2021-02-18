@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport d'activité Kanban du {{ ReportDate }}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
+</head>
+
+<body>
+    <section class="section content">
+        <h1>Rapport d'activité Kanban du {{ ReportDate }}</h1>
+
+        <h2>Commentaires</h2>
+        <table class="table is-hoverable">
+            <thead>
+                <th>Nom</th>
+                <th>N<sup>bre</sup> de commentaires</th>
+                <th>Carte</th>
+                <th>Commentaire</th>
+            </thead>
+            <tbody>
+            {{#CommentReports}}
+                <tr>
+                {{#Name}}
+                    <td rowspan="{{ TotalCommentCount }}">{{ Name }}</td>
+                    <td rowspan="{{ TotalCommentCount }}" class="has-text-right">{{ TotalCommentCount }}</td>
+                {{/Name}}
+                {{#WorkItemCommentCount}}
+                    <td rowspan="{{ WorkItemCommentCount }}"><strong><a href="https://dev.azure.com/ccticei/cei/_workitems/edit/{{WorkItemId}}">{{WorkItemId}} {{WorkItemTitle}}</a></strong></td>
+                {{/WorkItemCommentCount}}
+                    <td>
+                        <small><em>Créé le {{CreatedDate}}{{#ModifiedDate}}; modifié le {{ModifiedDate}}{{/ModifiedDate}}</em></small><br>
+                        {{{Text}}}
+                    </td>
+                </tr>
+            {{/CommentReports}}
+            </tbody>
+        </table>
+
+        <h2>Personnes n'ayant pas commenté de carte</h2>
+
+        <ul>
+        {{#Mutes}}
+            <li>{{.}}</li>
+        {{/Mutes}}
+        </ul>
+
+        {{! <h2>Cartes actives</h2>
+
+        <table class="table is-hoverable">
+            <thead>
+                <th>Réalisation/Doing</th>
+                <th>Réalisation/Done</th>
+                <th>Validation/Doing</th>
+                <th>Validation/Done</th>
+                <th>Terminé</th>
+            </thead>
+            <tbody>
+            </tbody>
+        </table> }}
+
+    </section>
+</body>
+</html>
