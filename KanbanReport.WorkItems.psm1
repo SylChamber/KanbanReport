@@ -59,7 +59,10 @@ function Get-CurrentUserStories {
         $_.Comments = (Invoke-WebRequest "$($_.Url)/comments" -Headers (Get-HttpHeaders)).Content |
             ConvertFrom-Json | ConvertTo-Comment
         $_.Comments | ForEach-Object {
-            $_.WorkItemTitle = ($cartes | Where-Object Id -eq $_.WorkItemId).Title
+            $carte = $cartes | Where-Object Id -eq $_.WorkItemId
+            $_.WorkItemTitle = $carte.Title
+            $_.WorkItemState = $carte.State
+            $_.WorkItemBoard = $carte.Board
         }
     }
 
@@ -155,6 +158,8 @@ function ConvertTo-Comment {
                     Id            = $_.id
                     WorkItemId    = $_.workItemId
                     WorkItemTitle = $null
+                    WorkItemState = $null
+                    WorkItemBoard = $null
                     Version       = $_.version
                     Text          = $_.text
                     CreatedBy     = $_.createdBy | ConvertTo-Person

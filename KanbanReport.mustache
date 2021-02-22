@@ -29,7 +29,9 @@
                     <td rowspan="{{ TotalCommentCount }}" class="has-text-right">{{ TotalCommentCount }}</td>
                 {{/Name}}
                 {{#WorkItemCommentCount}}
-                    <td rowspan="{{ WorkItemCommentCount }}"><strong><a href="https://dev.azure.com/ccticei/cei/_workitems/edit/{{WorkItemId}}">{{WorkItemId}} {{WorkItemTitle}}</a></strong></td>
+                    <td rowspan="{{ WorkItemCommentCount }}"><strong><a href="https://dev.azure.com/ccticei/cei/_workitems/edit/{{WorkItemId}}">{{WorkItemId}} {{WorkItemTitle}}</a></strong><br>
+                    <small>en <em>{{ WorkItemColumn }}/{{ WorkItemColumnDone }}</em></small>
+                    </td>
                 {{/WorkItemCommentCount}}
                     <td>
                         <small><em>Créé le {{CreatedDate}}{{#ModifiedDate}}; modifié le {{ModifiedDate}}{{/ModifiedDate}}</em></small><br>

@@ -151,6 +151,8 @@ function ConvertTo-CommentReport {
                             Count         = $_.Count
                             WorkItemId    = $_.Name
                             WorkItemTitle = $_.Group[0].WorkItemTitle
+                            WorkItemState = $_.Group[0].WorkItemState
+                            WorkItemBoard = $_.Group[0].WorkItemBoard
                             Comments      = $_.Group    
                         }
                     }
@@ -266,6 +268,9 @@ function ConvertTo-CommentGroupView {
             WorkItemCommentCount = $_.Count
             WorkItemId = $_.WorkItemId
             WorkItemTitle = $_.WorkItemTitle
+            WorkItemState = $_.WorkItemState
+            WorkItemColumn = $_.WorkItemBoard.Column
+            WorkItemColumnDone = $_.WorkItemBoard.ColumnDone ? 'Done' : 'Doing'
             Text = $_.Comments[0].Text
             CreatedDate = $_.Comments[0].CreatedDate.ToString('g')
             ModifiedDate = $_.Comments[0].ModifiedDate ? $_.Comments[0].ModifiedDate.ToString('g') : $null
@@ -281,4 +286,4 @@ function ConvertTo-CommentGroupView {
     }
 }
 
-Export-ModuleMember -Function Get-DailyKanbanReport, Get-HtmlDailyKanbanReport, ConvertTo-HtmlKanbanReport
+Export-ModuleMember -Function Get-DailyKanbanReport, Get-HtmlDailyKanbanReport, ConvertTo-HtmlKanbanReport, ConvertTo-KanbanReportView
