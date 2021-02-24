@@ -58,11 +58,13 @@ function Get-CurrentUserStories {
     $cartes | ForEach-Object {
         $_.Comments = (Invoke-WebRequest "$($_.Url)/comments" -Headers (Get-HttpHeaders)).Content |
             ConvertFrom-Json | ConvertTo-Comment
-        $_.Comments | ForEach-Object {
-            $carte = $cartes | Where-Object Id -eq $_.WorkItemId
-            $_.WorkItemTitle = $carte.Title
-            $_.WorkItemState = $carte.State
-            $_.WorkItemBoard = $carte.Board
+        if ($null -ne $_.Comments) {
+            $_.Comments | ForEach-Object {
+                $carte = $cartes | Where-Object Id -eq $_.WorkItemId
+                $_.WorkItemTitle = $carte.Title
+                $_.WorkItemState = $carte.State
+                $_.WorkItemBoard = $carte.Board
+            }
         }
     }
 
