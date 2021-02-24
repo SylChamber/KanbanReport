@@ -1,4 +1,4 @@
-# Kanban Report - opérations sur les rapports
+﻿# Kanban Report - opérations sur les rapports
 
 Import-Module -Name $PSScriptRoot\KanbanReport.Teams.psm1
 Import-Module -Name $PSScriptRoot\KanbanReport.Time.psm1

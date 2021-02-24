@@ -1,4 +1,4 @@
-# Kanban Report Time Functions
+﻿# Kanban Report Time Functions
 
 filter Find-ItemWasCreatedOrModifiedOnPreviousWorkday ([DateTime]$ReferenceDate = (Get-Date)) {
 <#

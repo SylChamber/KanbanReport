@@ -1,4 +1,4 @@
-# Kanban Report - opérations sur les Teams
+﻿# Kanban Report - opérations sur les Teams
 
 Import-Module -Name $PSScriptRoot\KanbanReport.Api.psm1
 
