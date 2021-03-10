@@ -6,17 +6,23 @@ Import-Module -Name $PSScriptRoot\KanbanReport.Teams.psm1
 function Get-CurrentUserStories {
 <#
 .SYNOPSIS
-    Obtient d'Azure DevOps les récits utilisateurs en cours ou fermés le jour ouvré précédent.
+    Obtient d'Azure DevOps les récits utilisateurs en cours ou fermés le jour ouvré précédent,
+    ou à la date spécifiée.
 .DESCRIPTION
     Obtient d'Azure DevOps les récits utilisateurs en cours ou fermés le jour ouvré précédent
-    pour l'organisation et le projet spécifiés.
+    pour l'organisation et le projet spécifiés, ou à la date spécifiée.
 .PARAMETER Org
     Nom de l'organisation Azure DevOps pour laquelle on doit récupérer les récits utilisateurs.
 .PARAMETER Project
     Nom du projet pour lequel on doit récupérer les récits utilisateurs.
+.PARAMETER ReferenceDate
+    Date de référence pour les cartes en cours.
 .EXAMPLE
-    # Obtient les récits utilisateurs du projet Manhattan du DoD.
+    # Obtient les récits utilisateurs en cours du projet Manhattan du DoD.
     Get-CurrentUserStories -Org DoD -Project Manhattan
+.EXAMPLE
+    # Obtient les récits utilisateurs du projet Manhattan du DoD qui étaient en cours le 1er avril 1940.
+    Get-CurrentUserStories -Org DoD -Project Manhattan -ReferenceDate (Get-Date -Date '1940-04-01')
 .INPUTS
     System.String
 .OUTPUTS
@@ -30,7 +36,12 @@ function Get-CurrentUserStories {
 
         [Parameter(Mandatory=$true)]
         [string]
-        $Project
+        $Project,
+
+        # Parameter help description
+        [Parameter(Mandatory=$false)]
+        [DateTime]
+        $ReferenceDate
     )
 
     $urlApis = "$(Get-ProjectUrl -Org $Org -Project $Project)/_apis"
@@ -38,7 +49,8 @@ function Get-CurrentUserStories {
     $urlWorkItems = "$urlApis/wit/workitems?ids="
 
     # préparer requête pour les cartes en cours ou les cartes fermées la veille
-    $wiql = "Select Id from WorkItems where [Work Item Type] = 'User Story' and [Area Path] under 'CEI' and (State in ('Active', 'Validation', 'Attente') or (State = 'Closed' and [Closed Date] >= @Today - 1)) order by [Changed Date] DESC"
+    $formattedDate = $ReferenceDate.ToString('MM\/dd\/yyyy')
+    $wiql = "Select Id from WorkItems where [Work Item Type] = 'User Story' and [Area Path] under 'CEI' and (State in ('Active', 'Validation', 'Attente') or (State = 'Closed' and [Closed Date] >= @Today - 1)) order by [Changed Date] DESC ASOF '$formattedDate'"
     $body = [PSCustomObject]@{
         query = $wiql
     } | ConvertTo-Json

@@ -98,7 +98,7 @@ function Get-DailyKanbanReport {
     $reportDate = Get-PreviousWorkDay -ReferenceDate $ReferenceDate
 
     $membres = Get-TeamMembers -Org $org -Project $project -Team $team
-    $cartes = Get-CurrentUserStories -Org $org -Project $project
+    $cartes = Get-CurrentUserStories -Org $org -Project $project -ReferenceDate $ReferenceDate
     $commentReports = $cartes.Comments |
         Find-ItemWasCreatedOrModifiedOnPreviousWorkday -ReferenceDate $ReferenceDate |
         Find-ItemWasCreatedBy -People $membres |
